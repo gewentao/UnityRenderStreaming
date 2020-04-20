@@ -10,6 +10,7 @@ namespace Unity.RenderStreaming
     public class UIController : MonoBehaviour
     {
         [SerializeField] TextMeshProUGUI text = null;
+        [SerializeField] TextMeshProUGUI time = null;
         [SerializeField] CanvasGroup canvasGroup = null;
         [SerializeField] Image pointer = null;
         [SerializeField] private AnimationCurve transitionCurve =
@@ -41,6 +42,9 @@ namespace Unity.RenderStreaming
             m_rectTransform = GetComponent<RectTransform>();
             canvasGroup.alpha = 0;
             text.text = string.Empty;
+            time.text = string.Empty;
+
+            InvokeRepeating("ModifyTime", 1, 0.001f);
         }
 
         void FixedUpdate()
@@ -102,6 +106,13 @@ namespace Unity.RenderStreaming
             canvasGroup.alpha = 1f;
             text.text = c.ToString();
             timeTransition = 0;
+        }
+
+        private void ModifyTime()
+        {
+            var timeStr = DateTime.Now.ToString("h:mm:ss.fff");
+            time.text = timeStr;
+            Debug.Log(timeStr);
         }
     }
 }
